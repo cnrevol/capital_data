@@ -42,12 +42,20 @@ from src.data_collector import DataCollector
 # 创建数据采集器
 collector = DataCollector(data_dir='./data')
 
-# 下载指数数据
-collector.fetch_and_save('000016.SH', start_date='2020-01-01')
+# 下载指数数据（包含分红数据）
+collector.fetch_and_save('000016.SH', start_date='2020-01-01', include_dividend=True)
+
+# 仅下载价格数据
+collector.fetch_and_save('000016.SH', start_date='2020-01-01', include_dividend=False)
 
 # 或批量下载所有指数
 collector.update_all_indices(start_date='2014-01-01')
 ```
+
+**分红数据说明**：
+- 指数本身不直接分红，系统获取对应ETF的分红数据作为参考
+- 支持分红数据的指数：上证50、沪深300、中证1000、创业板指、科创50
+- 分红数据包含：权益登记日、除息日、每份分红、分红发放日
 
 ### 3. 创建投资组合
 
@@ -126,7 +134,13 @@ capital_data/
 ```bash
 python examples/01_download_data.py
 ```
-演示如何下载和管理指数数据。
+演示如何下载和管理指数价格数据。
+
+### 示例1.5: 下载数据（包含分红）
+```bash
+python examples/04_download_with_dividends.py
+```
+演示如何下载包含分红信息的指数数据。
 
 ### 示例2: 创建组合
 ```bash
@@ -190,6 +204,7 @@ python examples/03_analyze_data.py
 - **总收益率**: 整个回测期间的总收益
 - **年化收益率**: 年化后的收益率
 - **累计收益**: 随时间的累计收益曲线
+- **分红收益**: 包含红利再投资或现金分红的影响
 
 ### 风险指标
 - **年化波动率**: 收益率的标准差（年化）

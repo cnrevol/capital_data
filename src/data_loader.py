@@ -150,7 +150,7 @@ class DataLoader:
             df = self.load_index_data(index_code, start_date, end_date)
             if df is not None and column in df.columns:
                 # 获取指数名称作为列名
-                if index_code in self.meta
+                if index_code in self.metadata:
                     col_name = f"{self.metadata[index_code]['name']}({index_code})"
                 else:
                     col_name = index_code
@@ -295,7 +295,7 @@ class DataLoader:
         Returns:
             Dict: 指数信息
         """
-        if index_code in self.meta
+        if index_code in self.metadata:
             return self.metadata[index_code]
         else:
             print(f"⚠ 元数据中未找到 {index_code}")
