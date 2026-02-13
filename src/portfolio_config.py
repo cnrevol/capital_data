@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional
 from datetime import datetime
+from .logger import get_logger
 
 
 class PortfolioConfig:
@@ -17,14 +18,16 @@ class PortfolioConfig:
     管理投资组合的所有配置参数
     """
     
-    def __init__(self, name: str = "未命名组合"):
+    def __init__(self, name: str = "未命名组合", log_dir='./logs'):
         """
         初始化投资组合配置
         
         Args:
             name: 组合名称
+            log_dir: 日志目录
         """
         self.name = name
+        self.logger = get_logger('portfolio_config', log_dir=log_dir)
         self.indices = {}  # {index_code: weight}
         self.start_date = None
         self.end_date = None
@@ -63,7 +66,7 @@ class PortfolioConfig:
             'name': name or index_code
         }
         
-        print(f"✓ 已添加指数: {name or index_code} ({index_code}), 权重: {weight:.2%}")
+        self.logger.info(f"Added index: {name or index_code} ({index_code}), weight: {weight:.2%}")
     
     def remove_index(self, index_code: str):
         """
@@ -74,9 +77,9 @@ class PortfolioConfig:
         """
         if index_code in self.indices:
             del self.indices[index_code]
-            print(f"✓ 已移除指数: {index_code}")
+            self.logger.info(f"Removed index: {index_code}")
         else:
-            print(f"⚠ 指数不存在: {index_code}")
+            self.logger.warning(f"Index does not exist: {index_code}")
     
     def set_date_range(self, start_date: str, end_date: str):
         """
@@ -88,7 +91,7 @@ class PortfolioConfig:
         """
         self.start_date = start_date
         self.end_date = end_date
-        print(f"✓ 回测日期范围: {start_date} 至 {end_date}")
+        self.logger.info(f"Backtest date range: {start_date} to {end_date}")
     
     def set_rebalancing(self, frequency: str = 'quarterly', 
                        method: str = 'calendar', 
@@ -113,9 +116,9 @@ class PortfolioConfig:
         self.rebalance_method = method
         self.rebalance_threshold = threshold
         
-        print(f"✓ 再平衡策略: {method}方式, 频率: {frequency}")
+        self.logger.info(f"Rebalancing strategy: {method} method, frequency: {frequency}")
         if method == 'threshold':
-            print(f"  阈值: {threshold:.2%}")
+            self.logger.info(f"Threshold: {threshold:.2%}")
     
     def set_dividend_policy(self, reinvest: bool = True):
         """
@@ -125,8 +128,8 @@ class PortfolioConfig:
             reinvest: 是否红利再投资
         """
         self.dividend_reinvest = reinvest
-        policy = "红利再投资" if reinvest else "现金分红"
-        print(f"✓ 红利政策: {policy}")
+        policy = "Dividend reinvestment" if reinvest else "Cash dividend"
+        self.logger.info(f"Dividend policy: {policy}")
     
     def set_costs(self, transaction_cost: float = 0.0003, 
                   management_fee: float = 0.0000):
@@ -139,7 +142,7 @@ class PortfolioConfig:
         """
         self.transaction_cost_rate = transaction_cost
         self.management_fee_rate = management_fee
-        print(f"✓ 交易成本: {transaction_cost:.4%}, 管理费: {management_fee:.4%}")
+        self.logger.info(f"Transaction cost: {transaction_cost:.4%}, management fee: {management_fee:.4%}")
     
     def validate(self) -> tuple:
         """
@@ -182,19 +185,19 @@ class PortfolioConfig:
         归一化权重，使其和为1
         """
         if not self.indices:
-            print("⚠ 没有指数可以归一化")
+            self.logger.warning("No indices to normalize")
             return
         
         total_weight = sum(idx['weight'] for idx in self.indices.values())
         
         if total_weight == 0:
-            print("✗ 权重总和为0，无法归一化")
+            self.logger.error("Total weight is 0, cannot normalize")
             return
         
         for index_code in self.indices:
             self.indices[index_code]['weight'] /= total_weight
         
-        print(f"✓ 权重已归一化（原总和: {total_weight:.4f}）")
+        self.logger.info(f"Weights normalized (original total: {total_weight:.4f})")
     
     def get_weights_dict(self) -> Dict[str, float]:
         """
@@ -291,9 +294,9 @@ class PortfolioConfig:
         # 验证配置
         is_valid, errors = self.validate()
         if not is_valid:
-            print("⚠ 配置验证失败，但仍将保存:")
+            self.logger.warning("Configuration validation failed, but will still save:")
             for error in errors:
-                print(f"  - {error}")
+                self.logger.warning(f"  - {error}")
         
         filepath = Path(filepath)
         filepath.parent.mkdir(parents=True, exist_ok=True)
@@ -301,9 +304,9 @@ class PortfolioConfig:
         try:
             with open(filepath, 'w', encoding='utf-8') as f:
                 json.dump(self.to_dict(), f, ensure_ascii=False, indent=2)
-            print(f"✓ 配置已保存至: {filepath}")
+            self.logger.info(f"Configuration saved to: {filepath}")
         except Exception as e:
-            print(f"✗ 保存配置失败: {str(e)}")
+            self.logger.error(f"Failed to save configuration: {str(e)}")
     
     @classmethod
     def load_config(cls, filepath: str) -> 'PortfolioConfig':
@@ -326,7 +329,7 @@ class PortfolioConfig:
                 config_dict = json.load(f)
             
             config = cls.from_dict(config_dict)
-            print(f"✓ 已加载配置: {config.name}")
+            config.logger.info(f"Configuration loaded: {config.name}")
             return config
             
         except Exception as e:
@@ -336,49 +339,55 @@ class PortfolioConfig:
         """
         打印配置摘要
         """
-        print("\n" + "="*60)
-        print(f"投资组合配置: {self.name}")
-        print("="*60)
+        summary = []
+        summary.append("\n" + "="*60)
+        summary.append(f"Portfolio Configuration: {self.name}")
+        summary.append("="*60)
         
         if self.description:
-            print(f"\n描述: {self.description}")
+            summary.append(f"\nDescription: {self.description}")
         
-        print(f"\n基本信息:")
-        print(f"  初始资金: ¥{self.initial_capital:,.0f}")
-        print(f"  回测期间: {self.start_date} 至 {self.end_date}")
+        summary.append(f"\nBasic Information:")
+        summary.append(f"  Initial Capital: {self.initial_capital:,.0f}")
+        summary.append(f"  Backtest Period: {self.start_date} to {self.end_date}")
         
-        print(f"\n指数配置:")
+        summary.append(f"\nIndex Configuration:")
         for code, info in self.indices.items():
-            print(f"  {info['name']:12s} ({code}): {info['weight']:6.2%}")
+            summary.append(f"  {info['name']:12s} ({code}): {info['weight']:6.2%}")
         
         total_weight = sum(idx['weight'] for idx in self.indices.values())
-        print(f"  {'权重总和':12s}           : {total_weight:6.2%}")
+        summary.append(f"  {'Total Weight':12s}           : {total_weight:6.2%}")
         
-        print(f"\n再平衡策略:")
-        print(f"  方式: {self.rebalance_method}")
-        print(f"  频率: {self.rebalance_frequency}")
+        summary.append(f"\nRebalancing Strategy:")
+        summary.append(f"  Method: {self.rebalance_method}")
+        summary.append(f"  Frequency: {self.rebalance_frequency}")
         if self.rebalance_method == 'threshold':
-            print(f"  阈值: {self.rebalance_threshold:.2%}")
+            summary.append(f"  Threshold: {self.rebalance_threshold:.2%}")
         
-        print(f"\n红利政策:")
-        policy = "红利再投资" if self.dividend_reinvest else "现金分红"
-        print(f"  {policy}")
+        summary.append(f"\nDividend Policy:")
+        policy = "Dividend reinvestment" if self.dividend_reinvest else "Cash dividend"
+        summary.append(f"  {policy}")
         
-        print(f"\n交易成本:")
-        print(f"  交易成本率: {self.transaction_cost_rate:.4%}")
-        print(f"  管理费率: {self.management_fee_rate:.4%}")
+        summary.append(f"\nTransaction Costs:")
+        summary.append(f"  Transaction cost rate: {self.transaction_cost_rate:.4%}")
+        summary.append(f"  Management fee rate: {self.management_fee_rate:.4%}")
         
         # 验证配置
         is_valid, errors = self.validate()
-        print(f"\n配置状态:")
+        summary.append(f"\nConfiguration Status:")
         if is_valid:
-            print(f"  ✓ 配置有效")
+            summary.append(f"  Valid")
         else:
-            print(f"  ✗ 配置存在问题:")
+            summary.append(f"  Invalid - Issues found:")
             for error in errors:
-                print(f"    - {error}")
+                summary.append(f"    - {error}")
         
-        print("="*60 + "\n")
+        summary.append("="*60 + "\n")
+        
+        # Print and log
+        summary_text = "\n".join(summary)
+        print(summary_text)
+        self.logger.info("Configuration summary displayed")
 
 
 if __name__ == '__main__':

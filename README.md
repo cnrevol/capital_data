@@ -22,9 +22,11 @@
 | 沪深300 | 000300.SH | 2005-04-08 |
 | 中证500 | 000905.SH | 2007-01-15 |
 | 中证1000 | 000852.SH | 2014-10-17 |
+| 上证红利 | 000015.SH | 2005-01-04 |
 | 创业板指 | 399006.SZ | 2010-06-01 |
 | 科创50 | 000688.SH | 2019-12-31 |
-| 上证红利 | 000015.SH | 2005-01-04 |
+
+**注意**: 指数配置现在通过 [`config/indices_config.json`](config/indices_config.json:1) 文件管理，便于添加或修改指数定义。
 
 ## 🚀 快速开始
 
@@ -96,24 +98,29 @@ results.generate_report('reports/backtest_report.html')
 capital_data/
 ├── src/                      # 源代码
 │   ├── __init__.py
-│   ├── data_collector.py     # 数据采集模块
-│   ├── data_loader.py        # 数据加载模块
-│   ├── portfolio_config.py   # 组合配置模块
+│   ├── logger.py            # 日志模块 ✨NEW
+│   ├── data_collector.py     # 数据采集模块 (已更新使用日志)
+│   ├── data_loader.py        # 数据加载模块 (已更新使用日志)
+│   ├── portfolio_config.py   # 组合配置模块 (已更新使用日志)
 │   ├── backtest_engine.py    # 回测引擎（待实现）
 │   ├── rebalancing.py        # 再平衡策略（待实现）
 │   ├── dividend_handler.py   # 红利处理（待实现）
 │   ├── performance.py        # 绩效计算（待实现）
 │   └── visualization.py      # 可视化模块（待实现）
+├── config/                  # 配置文件 ✨NEW
+│   └── indices_config.json  # 指数配置文件
 ├── data/                     # 数据目录
 │   ├── indices/             # 指数数据
 │   ├── dividends/           # 分红数据
-│   └── portfolios/          # 组合配置
+│   ├── portfolios/          # 组合配置
+│   └── logs/                # 日志文件 ✨NEW
 ├── examples/                # 示例脚本
 │   ├── 01_download_data.py
 │   ├── 02_create_portfolio.py
 │   └── 03_analyze_data.py
-├── plans/                   # 设计文档
-│   └── portfolio_system_design.md
+├── design/                  # 设计文档
+│   └── roo.design.md
+├── test_logging.py          # 日志测试脚本 ✨NEW
 ├── requirements.txt         # 依赖包
 └── README.md               # 本文件
 ```
@@ -213,6 +220,8 @@ python examples/03_analyze_data.py
 - [x] 数据存储结构
 - [x] 数据加载模块
 - [x] 投资组合配置模块
+- [x] 日志处理模块 ✨NEW
+- [x] 配置文件管理 ✨NEW
 - [x] 示例脚本
 - [x] 设计文档
 
@@ -230,7 +239,26 @@ python examples/03_analyze_data.py
 
 ## 📖 详细文档
 
-完整的系统设计文档请参阅: [`plans/portfolio_system_design.md`](plans/portfolio_system_design.md:1)
+完整的系统设计文档请参阅: [`design/roo.design.md`](design/roo.design.md:1)
+
+## 🆕 最新更新 (v0.1.1)
+
+### 1. 日志处理模块
+- 新增 [`src/logger.py`](src/logger.py:1) 模块，提供统一的日志管理
+- 所有模块已更新使用日志代替 print 语句
+- 日志文件存储在 `data/logs/` 目录
+- 日志格式清晰，不包含特殊符号和emoji
+
+### 2. 配置文件管理
+- 新增 [`config/indices_config.json`](config/indices_config.json:1) 配置文件
+- 指数定义通过配置文件管理，便于维护
+- 支持通过修改配置文件添加新指数
+- 包含中证红利、中证500、中证1000、科创50等指数
+
+### 3. 测试脚本
+- 新增 [`test_logging.py`](test_logging.py:1) 测试脚本
+- 验证日志功能和配置加载
+- 运行 `python test_logging.py` 进行测试
 
 ## 🤝 贡献
 
@@ -252,4 +280,4 @@ python examples/03_analyze_data.py
 
 **开发进度**: Phase 1 完成 ✅ | Phase 2-4 开发中 🚧
 
-最后更新: 2024-02-07
+最后更新: 2024-02-12

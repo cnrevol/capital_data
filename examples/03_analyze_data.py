@@ -26,7 +26,7 @@ def analyze_single_index():
     df = loader.load_index_data('000016.SH', start_date='2020-01-01')
     
     if df is None:
-        print("✗ 数据加载失败，请先运行 01_download_data.py 下载数据")
+        print("[ERROR] 数据加载失败，请先运行 01_download_data.py 下载数据")
         return
     
     print(f"数据概览:")
@@ -78,7 +78,7 @@ def compare_multiple_indices():
     )
     
     if df is None:
-        print("✗ 数据加载失败")
+        print("[ERROR] 数据加载失败")
         return
     
     print(f"已加载 {len(df.columns)} 个指数的数据")
@@ -143,27 +143,27 @@ def validate_data_quality():
         validation = loader.validate_data(index_code)
         
         if validation.get('valid'):
-            print(f"✓ 数据有效")
+            print(f"[OK] 数据有效")
             print(f"  总行数: {validation['total_rows']}")
             print(f"  日期范围: {validation['date_range'][0]} 至 {validation['date_range'][1]}")
             
             if validation['duplicate_dates'] > 0:
-                print(f"  ⚠ 重复日期: {validation['duplicate_dates']}")
+                print(f"  [WARNING] 重复日期: {validation['duplicate_dates']}")
             
             if validation['missing_values']:
-                print(f"  ⚠ 缺失值:")
+                print(f"  [WARNING] 缺失值:")
                 for col, count in validation['missing_values'].items():
                     print(f"    {col}: {count}")
             
             if validation['negative_values']:
-                print(f"  ⚠ 负值:")
+                print(f"  [WARNING] 负值:")
                 for col, count in validation['negative_values'].items():
                     print(f"    {col}: {count}")
             
             if validation.get('large_date_gaps', 0) > 0:
-                print(f"  ⚠ 大日期间隔: {validation['large_date_gaps']}")
+                print(f"  [WARNING] 大日期间隔: {validation['large_date_gaps']}")
         else:
-            print(f"✗ 数据无效: {validation.get('error')}")
+            print(f"[ERROR] 数据无效: {validation.get('error')}")
 
 
 def main():

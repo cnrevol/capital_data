@@ -1,0 +1,110 @@
+2026-02-12 14:54:52 [INFO] data_collector - data_collector.py:55 - Loaded configuration from config\indices_config.json
+2026-02-12 14:54:52 [INFO] data_collector - data_collector.py:119 - Data directories created: data
+2026-02-12 15:00:59 [INFO] data_collector - data_collector.py:55 - Loaded configuration from config\indices_config.json
+2026-02-12 15:00:59 [INFO] data_collector - data_collector.py:119 - Data directories created: data
+2026-02-12 15:00:59 [INFO] data_collector - data_collector.py:145 - Fetching data for 上证50 (000016.SH)
+2026-02-12 15:00:59 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2023-12-31
+2026-02-12 15:01:00 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 970 records for 000016.SH
+2026-02-12 15:01:00 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000016_SH_上证50.csv
+2026-02-12 15:01:00 [INFO] data_collector - data_collector.py:145 - Fetching data for 上证50 (000016.SH)
+2026-02-12 15:01:00 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:01:01 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 000016.SH
+2026-02-12 15:01:01 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000016_SH_上证50.csv
+2026-02-12 15:01:01 [INFO] data_collector - data_collector.py:145 - Fetching data for 沪深300 (000300.SH)
+2026-02-12 15:01:01 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:01:02 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 000300.SH
+2026-02-12 15:01:02 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000300_SH_沪深300.csv
+2026-02-12 15:01:02 [INFO] data_collector - data_collector.py:145 - Fetching data for 中证1000 (000852.SH)
+2026-02-12 15:01:02 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:01:03 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2756 records for 000852.SH
+2026-02-12 15:01:03 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000852_SH_中证1000.csv
+2026-02-12 15:01:03 [INFO] data_collector - data_collector.py:145 - Fetching data for 创业板指 (399006.SZ)
+2026-02-12 15:01:03 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:01:04 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 399006.SZ
+2026-02-12 15:01:04 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\399006_SZ_创业板指.csv
+2026-02-12 15:01:16 [INFO] data_collector - data_collector.py:55 - Loaded configuration from config\indices_config.json
+2026-02-12 15:01:16 [INFO] data_collector - data_collector.py:119 - Data directories created: data
+2026-02-12 15:01:16 [INFO] data_collector - data_collector.py:145 - Fetching data for 上证50 (000016.SH)
+2026-02-12 15:01:16 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2023-12-31
+2026-02-12 15:01:17 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 970 records for 000016.SH
+2026-02-12 15:01:17 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000016_SH_上证50.csv
+2026-02-12 15:01:17 [INFO] data_collector - data_collector.py:145 - Fetching data for 上证50 (000016.SH)
+2026-02-12 15:01:17 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:01:18 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 000016.SH
+2026-02-12 15:01:18 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000016_SH_上证50.csv
+2026-02-12 15:01:18 [INFO] data_collector - data_collector.py:145 - Fetching data for 沪深300 (000300.SH)
+2026-02-12 15:01:18 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:01:19 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 000300.SH
+2026-02-12 15:01:19 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000300_SH_沪深300.csv
+2026-02-12 15:01:19 [INFO] data_collector - data_collector.py:145 - Fetching data for 中证1000 (000852.SH)
+2026-02-12 15:01:19 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:01:19 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2756 records for 000852.SH
+2026-02-12 15:01:19 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000852_SH_中证1000.csv
+2026-02-12 15:01:19 [INFO] data_collector - data_collector.py:145 - Fetching data for 创业板指 (399006.SZ)
+2026-02-12 15:01:19 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:01:20 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 399006.SZ
+2026-02-12 15:01:20 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\399006_SZ_创业板指.csv
+2026-02-12 15:25:54 [INFO] data_collector - data_collector.py:55 - Loaded configuration from config\indices_config.json
+2026-02-12 15:25:54 [INFO] data_collector - data_collector.py:119 - Data directories created: data
+2026-02-12 15:25:54 [INFO] data_collector - data_collector.py:145 - Fetching data for 上证50 (000016.SH)
+2026-02-12 15:25:54 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2023-12-31
+2026-02-12 15:25:55 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 970 records for 000016.SH
+2026-02-12 15:25:55 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000016_SH_上证50.csv
+2026-02-12 15:25:55 [INFO] data_collector - data_collector.py:226 - ============================================================
+2026-02-12 15:25:55 [INFO] data_collector - data_collector.py:227 - Starting batch update of index data
+2026-02-12 15:25:55 [INFO] data_collector - data_collector.py:228 - ============================================================
+2026-02-12 15:25:55 [INFO] data_collector - data_collector.py:234 - [1/7] Processing 000016.SH
+2026-02-12 15:25:55 [INFO] data_collector - data_collector.py:145 - Fetching data for 上证50 (000016.SH)
+2026-02-12 15:25:55 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2026-02-12
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 1483 records for 000016.SH
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000016_SH_上证50.csv
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:234 - [2/7] Processing 000300.SH
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:145 - Fetching data for 沪深300 (000300.SH)
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2026-02-12
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 1483 records for 000300.SH
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000300_SH_沪深300.csv
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:234 - [3/7] Processing 000852.SH
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:145 - Fetching data for 中证1000 (000852.SH)
+2026-02-12 15:25:56 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2026-02-12
+2026-02-12 15:25:57 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 1483 records for 000852.SH
+2026-02-12 15:25:57 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000852_SH_中证1000.csv
+2026-02-12 15:25:57 [INFO] data_collector - data_collector.py:234 - [4/7] Processing 000905.SH
+2026-02-12 15:25:57 [INFO] data_collector - data_collector.py:145 - Fetching data for 中证500 (000905.SH)
+2026-02-12 15:25:57 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2026-02-12
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 1483 records for 000905.SH
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000905_SH_中证500.csv
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:234 - [5/7] Processing 399006.SZ
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:145 - Fetching data for 创业板指 (399006.SZ)
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2026-02-12
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 1483 records for 399006.SZ
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\399006_SZ_创业板指.csv
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:234 - [6/7] Processing 000688.SH
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:145 - Fetching data for 科创50 (000688.SH)
+2026-02-12 15:25:58 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2026-02-12
+2026-02-12 15:25:59 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 1483 records for 000688.SH
+2026-02-12 15:25:59 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000688_SH_科创50.csv
+2026-02-12 15:25:59 [INFO] data_collector - data_collector.py:234 - [7/7] Processing 000015.SH
+2026-02-12 15:25:59 [INFO] data_collector - data_collector.py:145 - Fetching data for 上证红利 (000015.SH)
+2026-02-12 15:25:59 [INFO] data_collector - data_collector.py:146 - Date range: 2020-01-01 to 2026-02-12
+2026-02-12 15:25:59 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 1483 records for 000015.SH
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000015_SH_上证红利.csv
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:241 - ============================================================
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:242 - Batch update completed: 7 succeeded, 0 failed
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:243 - ============================================================
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:266 - Metadata updated: data\indices\metadata.json
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:145 - Fetching data for 上证50 (000016.SH)
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 000016.SH
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000016_SH_上证50.csv
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:145 - Fetching data for 沪深300 (000300.SH)
+2026-02-12 15:26:00 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:26:01 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 000300.SH
+2026-02-12 15:26:01 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000300_SH_沪深300.csv
+2026-02-12 15:26:01 [INFO] data_collector - data_collector.py:145 - Fetching data for 中证1000 (000852.SH)
+2026-02-12 15:26:01 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:26:01 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2756 records for 000852.SH
+2026-02-12 15:26:01 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\000852_SH_中证1000.csv
+2026-02-12 15:26:01 [INFO] data_collector - data_collector.py:145 - Fetching data for 创业板指 (399006.SZ)
+2026-02-12 15:26:01 [INFO] data_collector - data_collector.py:146 - Date range: 2014-01-01 to 2026-02-12
+2026-02-12 15:26:02 [INFO] data_collector - data_collector.py:170 - Successfully retrieved 2947 records for 399006.SZ
+2026-02-12 15:26:02 [INFO] data_collector - data_collector.py:195 - Data saved to: data\indices\399006_SZ_创业板指.csv

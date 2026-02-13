@@ -1,0 +1,38 @@
+{
+  "name": "均衡配置组合 v2",
+  "description": "调整后的均衡配置",
+  "initial_capital": 1000000,
+  "start_date": "2014-10-17",
+  "end_date": "2023-12-31",
+  "indices": {
+    "000016.SH": {
+      "weight": 0.3,
+      "name": "上证50"
+    },
+    "000300.SH": {
+      "weight": 0.3,
+      "name": "沪深300"
+    },
+    "000852.SH": {
+      "weight": 0.2,
+      "name": "中证1000"
+    },
+    "000905.SH": {
+      "weight": 0.2,
+      "name": "中证500"
+    }
+  },
+  "rebalancing": {
+    "frequency": "quarterly",
+    "method": "calendar",
+    "threshold": 0.05
+  },
+  "dividend": {
+    "reinvest": true
+  },
+  "costs": {
+    "transaction_cost_rate": 0.0003,
+    "management_fee_rate": 0.0
+  },
+  "created_time": "2026-02-12 15:18:59"
+}

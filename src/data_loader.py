@@ -10,6 +10,7 @@ from pathlib import Path
 from datetime import datetime
 import json
 from typing import List, Dict, Optional, Union
+from .logger import get_logger
 
 
 class DataLoader:
@@ -29,6 +30,7 @@ class DataLoader:
         self.data_dir = Path(data_dir)
         self.indices_dir = self.data_dir / 'indices'
         self.dividends_dir = self.data_dir / 'dividends'
+        self.logger = get_logger('data_loader', log_dir=self.data_dir / 'logs')
         self.metadata = self._load_metadata()
     
     def _load_metadata(self) -> Dict:
@@ -41,7 +43,7 @@ class DataLoader:
         metadata_path = self.indices_dir / 'metadata.json'
         
         if not metadata_path.exists():
-            print(f"⚠ 元数据文件不存在: {metadata_path}")
+            self.logger.warning(f"Metadata file not found: {metadata_path}")
             return {}
         
         try:
@@ -49,7 +51,7 @@ class DataLoader:
                 metadata = json.load(f)
             return metadata
         except Exception as e:
-            print(f"✗ 加载元数据失败: {str(e)}")
+            self.logger.error(f"Failed to load meta {str(e)}")
             return {}
     
     def get_index_filepath(self, index_code: str) -> Path:
@@ -93,8 +95,8 @@ class DataLoader:
         filepath = self.get_index_filepath(index_code)
         
         if not filepath.exists():
-            print(f"✗ 数据文件不存在: {filepath}")
-            print(f"  提示: 请先使用 DataCollector 下载数据")
+            self.logger.error(f"Data file not found: {filepath}")
+            self.logger.info("Please use DataCollector to download data first")
             return None
         
         try:
@@ -105,7 +107,7 @@ class DataLoader:
             if 'date' in df.columns:
                 df['date'] = pd.to_datetime(df['date'])
             else:
-                print(f"✗ 数据文件缺少 'date' 列")
+                self.logger.error(f"Data file missing 'date' column")
                 return None
             
             # 筛选日期范围
@@ -118,13 +120,13 @@ class DataLoader:
             df = df.set_index('date').sort_index()
             
             if df.empty:
-                print(f"⚠ 在指定日期范围内没有数据")
+                self.logger.warning(f"No data in specified date range for {index_code}")
                 return None
             
             return df
             
         except Exception as e:
-            print(f"✗ 加载数据失败: {str(e)}")
+            self.logger.error(f"Failed to load data for {index_code}: {str(e)}")
             return None
     
     def load_multiple_indices(self, 
@@ -150,24 +152,24 @@ class DataLoader:
             df = self.load_index_data(index_code, start_date, end_date)
             if df is not None and column in df.columns:
                 # 获取指数名称作为列名
-                if index_code in self.meta
+                if index_code in self.metadata:
                     col_name = f"{self.metadata[index_code]['name']}({index_code})"
                 else:
                     col_name = index_code
                 
                 dfs[col_name] = df[column]
             else:
-                print(f"⚠ 跳过 {index_code}: 数据加载失败或缺少列 '{column}'")
+                self.logger.warning(f"Skipping {index_code}: failed to load data or missing column '{column}'")
         
         if not dfs:
-            print(f"✗ 未能加载任何指数数据")
+            self.logger.error(f"Failed to load any index data")
             return None
         
         # 合并所有数据
         result = pd.DataFrame(dfs)
         
         # 填充缺失值（使用前向填充）
-        result = result.fillna(method='ffill')
+        result = result.ffill()
         
         return result
     
@@ -201,7 +203,7 @@ class DataLoader:
         elif freq == 'monthly':
             returns = df['close'].resample('M').last().pct_change()
         else:
-            print(f"✗ 不支持的频率: {freq}")
+            self.logger.error(f"Unsupported frequency: {freq}")
             return None
         
         # 移除NaN值
@@ -253,7 +255,7 @@ class DataLoader:
         common_end = min(end_dates)
         
         if common_start > common_end:
-            print(f"⚠ 指数之间没有重叠的日期范围")
+            self.logger.warning(f"No overlapping date range between indices")
             return None
         
         return (common_start, common_end)
@@ -272,7 +274,7 @@ class DataLoader:
         filepath = self.dividends_dir / filename
         
         if not filepath.exists():
-            print(f"✗ 分红数据文件不存在: {filepath}")
+            self.logger.warning(f"Dividend data file not found: {filepath}")
             return None
         
         try:
@@ -282,7 +284,7 @@ class DataLoader:
                 df = df.set_index('date').sort_index()
             return df
         except Exception as e:
-            print(f"✗ 加载分红数据失败: {str(e)}")
+            self.logger.error(f"Failed to load dividend  {str(e)}")
             return None
     
     def get_index_info(self, index_code: str) -> Optional[Dict]:
@@ -295,10 +297,10 @@ class DataLoader:
         Returns:
             Dict: 指数信息
         """
-        if index_code in self.meta
+        if index_code in self.metadata:
             return self.metadata[index_code]
         else:
-            print(f"⚠ 元数据中未找到 {index_code}")
+            self.logger.warning(f"Index {index_code} not found in metadata")
             return None
     
     def list_available_indices(self) -> pd.DataFrame:
@@ -354,7 +356,7 @@ class DataLoader:
                 })
         
         if not indices_list:
-            print("⚠ 没有找到任何指数数据文件")
+            self.logger.warning("No index data files found")
             return pd.DataFrame()
         
         return pd.DataFrame(indices_list)

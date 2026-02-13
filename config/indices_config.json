@@ -1,0 +1,62 @@
+{
+  "indices": {
+    "000016.SH": {
+      "name": "上证50",
+      "akshare_symbol": "sh000016",
+      "launch_date": "2004-01-02",
+      "base_point": 1000,
+      "base_date": "2003-12-31"
+    },
+    "000300.SH": {
+      "name": "沪深300",
+      "akshare_symbol": "sh000300",
+      "launch_date": "2005-04-08",
+      "base_point": 1000,
+      "base_date": "2004-12-31"
+    },
+    "000852.SH": {
+      "name": "中证1000",
+      "akshare_symbol": "sh000852",
+      "launch_date": "2014-10-17",
+      "base_point": 1000,
+      "base_date": "2014-10-16"
+    },
+    "000905.SH": {
+      "name": "中证500",
+      "akshare_symbol": "sh000905",
+      "launch_date": "2007-01-15",
+      "base_point": 1000,
+      "base_date": "2004-12-31"
+    },
+    "399006.SZ": {
+      "name": "创业板指",
+      "akshare_symbol": "sz399006",
+      "launch_date": "2010-06-01",
+      "base_point": 1000,
+      "base_date": "2010-05-31"
+    },
+    "000688.SH": {
+      "name": "科创50",
+      "akshare_symbol": "sh000688",
+      "launch_date": "2019-12-31",
+      "base_point": 1000,
+      "base_date": "2019-12-30"
+    },
+    "000015.SH": {
+      "name": "上证红利",
+      "akshare_symbol": "sh000015",
+      "launch_date": "2005-01-04",
+      "base_point": 1000,
+      "base_date": "2004-12-31"
+    },
+    "022456.OF": {
+      "name": "招商中证A500ETF",
+      "akshare_symbol": "022456",
+      "launch_date": "2005-01-04",
+      "base_point": 1000,
+      "base_date": "2004-12-31"
+    }
+  },
+  "data_source": "akshare",
+  "default_start_date": "2014-01-01"
+}

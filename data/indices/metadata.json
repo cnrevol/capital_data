@@ -1,0 +1,58 @@
+{
+  "000016.SH": {
+    "name": "上证50",
+    "launch_date": "2004-01-02",
+    "last_update": "2026-02-13 13:57:25",
+    "data_source": "akshare",
+    "base_point": 1000,
+    "base_date": "2003-12-31"
+  },
+  "000300.SH": {
+    "name": "沪深300",
+    "launch_date": "2005-04-08",
+    "last_update": "2026-02-13 13:57:25",
+    "data_source": "akshare",
+    "base_point": 1000,
+    "base_date": "2004-12-31"
+  },
+  "000852.SH": {
+    "name": "中证1000",
+    "launch_date": "2014-10-17",
+    "last_update": "2026-02-13 13:57:25",
+    "data_source": "akshare",
+    "base_point": 1000,
+    "base_date": "2014-10-16"
+  },
+  "000905.SH": {
+    "name": "中证500",
+    "launch_date": "2007-01-15",
+    "last_update": "2026-02-13 13:57:25",
+    "data_source": "akshare",
+    "base_point": 1000,
+    "base_date": "2004-12-31"
+  },
+  "399006.SZ": {
+    "name": "创业板指",
+    "launch_date": "2010-06-01",
+    "last_update": "2026-02-13 13:57:25",
+    "data_source": "akshare",
+    "base_point": 1000,
+    "base_date": "2010-05-31"
+  },
+  "000688.SH": {
+    "name": "科创50",
+    "launch_date": "2019-12-31",
+    "last_update": "2026-02-13 13:57:25",
+    "data_source": "akshare",
+    "base_point": 1000,
+    "base_date": "2019-12-30"
+  },
+  "000015.SH": {
+    "name": "上证红利",
+    "launch_date": "2005-01-04",
+    "last_update": "2026-02-13 13:57:25",
+    "data_source": "akshare",
+    "base_point": 1000,
+    "base_date": "2004-12-31"
+  }
+}

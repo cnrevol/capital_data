@@ -1,0 +1,8 @@
+2026-02-12 14:54:52 [INFO] portfolio_config - portfolio_config.py:69 - Added index: 上证50 (000016.SH), weight: 25.00%
+2026-02-12 14:54:52 [INFO] portfolio_config - portfolio_config.py:69 - Added index: 沪深300 (000300.SH), weight: 25.00%
+2026-02-12 14:54:52 [INFO] portfolio_config - portfolio_config.py:69 - Added index: 中证1000 (000852.SH), weight: 25.00%
+2026-02-12 14:54:52 [INFO] portfolio_config - portfolio_config.py:69 - Added index: 中证500 (000905.SH), weight: 25.00%
+2026-02-12 14:54:52 [INFO] portfolio_config - portfolio_config.py:94 - Backtest date range: 2020-01-01 to 2023-12-31
+2026-02-12 14:54:52 [INFO] portfolio_config - portfolio_config.py:119 - Rebalancing strategy: calendar method, frequency: quarterly
+2026-02-12 14:54:52 [INFO] portfolio_config - portfolio_config.py:132 - Dividend policy: Dividend reinvestment
+2026-02-12 14:54:52 [INFO] portfolio_config - portfolio_config.py:390 - Configuration summary displayed

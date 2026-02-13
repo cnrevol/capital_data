@@ -10,9 +10,12 @@ __author__ = "Portfolio Backtest System"
 from .data_collector import DataCollector
 from .data_loader import DataLoader
 from .portfolio_config import PortfolioConfig
+from .logger import get_logger, PortfolioLogger
 
 __all__ = [
     'DataCollector',
     'DataLoader',
     'PortfolioConfig',
+    'get_logger',
+    'PortfolioLogger',
 ]

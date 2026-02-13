@@ -20,7 +20,10 @@ def main():
     print("="*60 + "\n")
     
     # 创建数据采集器
-    collector = DataCollector(data_dir='./data')
+    collector = DataCollector(
+        data_dir='./data',
+        config_path='./capital_data/config/indices_config.json'
+    )
     
     # 显示支持的指数列表
     print("1. 查看支持的指数:")
@@ -46,18 +49,18 @@ def main():
     )
     
     if success:
-        print("✓ 下载成功！")
+        print("[OK] 下载成功！")
     else:
-        print("✗ 下载失败！")
+        print("[FAIL] 下载失败！")
     print("\n")
     
     # 批量下载所有指数（可选，注释掉以避免频繁请求）
     print("4. 批量下载所有指数 (可选):")
     print("-"*60)
     print("提示: 取消注释以下代码可批量下载所有指数")
-    print("# collector.update_all_indices(start_date='2020-01-01')")
+    # print("# collector.update_all_indices(start_date='2020-01-01')")
     print("\n")
-    
+    collector.update_all_indices(start_date='2020-01-01')
     # 建议：按需下载
     print("5. 推荐做法 - 按需下载特定指数:")
     print("-"*60)
