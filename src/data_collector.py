@@ -213,102 +213,139 @@ class DataCollector:
                 
                 # 获取ETF分红数据
                 try:
-                    # 尝试使用fund_etf_fund_info_em获取ETF基金分红信息
-                    df_dividend = ak.fund_etf_fund_info_em(fund=etf_code, indicator="分红送配")
+                    # 方法1: 尝试使用fund_etf_fund_info_em获取ETF基金信息
+                    print(f"  尝试方法1: fund_etf_fund_info_em...")
+                    df_info = ak.fund_etf_fund_info_em(fund=etf_code)
                     
-                    if df_dividend is not None and not df_dividend.empty:
-                        # 根据实际返回的列名进行重命名
-                        # AKShare返回的列名可能是：权益登记日、除息日、每份分红、分红发放日等
-                        column_mapping = {}
+                    if df_info is not None and not df_info.empty:
+                        # 查找分红相关的行
+                        dividend_rows = []
+                        for idx, row in df_info.iterrows():
+                            item = str(row.get('item', row.get('项目', '')))
+                            if '分红' in item or '送配' in item:
+                                dividend_rows.append(row)
                         
-                        for col in df_dividend.columns:
-                            if '权益登记' in col or '登记日' in col:
-                                column_mapping[col] = 'record_date'
-                            elif '除息' in col or '除权除息' in col:
-                                column_mapping[col] = 'ex_dividend_date'
-                            elif '分红' in col and ('每份' in col or '单位' in col):
-                                column_mapping[col] = 'dividend_per_share'
-                            elif '发放' in col:
-                                column_mapping[col] = 'payment_date'
-                        
-                        if column_mapping:
-                            df_dividend = df_dividend.rename(columns=column_mapping)
-                        
-                        # 转换日期格式
-                        for col in ['record_date', 'ex_dividend_date', 'payment_date']:
-                            if col in df_dividend.columns:
-                                df_dividend[col] = pd.to_datetime(df_dividend[col], errors='coerce')
-                        
-                        # 转换分红金额为数值
-                        if 'dividend_per_share' in df_dividend.columns:
-                            df_dividend['dividend_per_share'] = pd.to_numeric(
-                                df_dividend['dividend_per_share'], errors='coerce'
-                            )
-                        
-                        # 筛选日期范围
-                        if start_date and 'ex_dividend_date' in df_dividend.columns:
-                            df_dividend = df_dividend[df_dividend['ex_dividend_date'] >= start_date]
-                        if end_date and 'ex_dividend_date' in df_dividend.columns:
-                            df_dividend = df_dividend[df_dividend['ex_dividend_date'] <= end_date]
-                        
-                        # 删除空行
-                        df_dividend = df_dividend.dropna(how='all')
-                        
-                        if not df_dividend.empty:
-                            print(f"✓ 成功获取 {len(df_dividend)} 条分红记录")
-                            return df_dividend
-                        else:
-                            print(f"  ⚠ 筛选后无分红记录")
+                        if dividend_rows:
+                            print(f"  ✓ 从基金信息中找到分红相关数据")
+                            # 这里可以进一步解析分红信息
+                            # 但由于格式可能不统一，暂时记录原始数据
                     
                 except Exception as e:
-                    # 如果第一种方法失败，尝试其他方法
                     print(f"  ⚠ 方法1失败: {str(e)}")
+                
+                try:
+                    # 方法2: 使用fund_etf_hist_sina获取历史数据（新浪接口）
+                    print(f"  尝试方法2: fund_etf_hist_sina...")
+                    df_hist = ak.fund_etf_hist_sina(symbol=etf_code)
                     
-                    try:
-                        # 尝试使用fund_etf_hist_em获取历史净值（可能包含分红信息）
-                        print(f"  尝试方法2: 获取ETF历史数据...")
-                        df_hist = ak.fund_etf_hist_em(
-                            symbol=etf_code,
-                            period="daily",
-                            start_date=start_date.replace('-', '') if start_date else '20100101',
-                            end_date=end_date.replace('-', '') if end_date else datetime.now().strftime('%Y%m%d'),
-                            adjust=""  # 不复权，以便看到分红影响
-                        )
+                    if df_hist is not None and not df_hist.empty:
+                        # 检查列名
+                        print(f"    可用列: {df_hist.columns.tolist()}")
                         
-                        if df_hist is not None and not df_hist.empty:
-                            # 从历史数据中推断分红日期（当单位净值有明显跳跃时）
-                            df_hist['日期'] = pd.to_datetime(df_hist['日期'])
-                            df_hist = df_hist.sort_values('日期')
+                        # 尝试找到收盘价列
+                        close_col = None
+                        for col in ['close', '收盘价', 'Close', '收盘']:
+                            if col in df_hist.columns:
+                                close_col = col
+                                break
+                        
+                        if close_col and 'date' in df_hist.columns or '日期' in df_hist.columns:
+                            date_col = 'date' if 'date' in df_hist.columns else '日期'
+                            df_hist[date_col] = pd.to_datetime(df_hist[date_col])
+                            df_hist = df_hist.sort_values(date_col)
                             
-                            # 计算单位净值的日涨跌幅
-                            df_hist['nav_change'] = df_hist['单位净值'].pct_change()
+                            # 计算日收益率
+                            df_hist['return'] = df_hist[close_col].pct_change()
                             
-                            # 查找异常的负收益（可能是分红导致的）
-                            # 一般分红会导致净值下跌超过2%
-                            potential_dividends = df_hist[df_hist['nav_change'] < -0.02].copy()
+                            # 查找异常的负收益（可能是分红）
+                            potential_dividends = df_hist[df_hist['return'] < -0.015].copy()
                             
                             if not potential_dividends.empty:
-                                # 估算分红金额（净值下跌的绝对值）
+                                # 估算分红金额
                                 potential_dividends['estimated_dividend'] = (
-                                    potential_dividends['nav_change'].abs() *
-                                    potential_dividends['单位净值']
+                                    potential_dividends['return'].abs() *
+                                    potential_dividends[close_col]
                                 )
                                 
                                 df_dividend = pd.DataFrame({
-                                    'ex_dividend_date': potential_dividends['日期'],
+                                    'ex_dividend_date': potential_dividends[date_col],
                                     'dividend_per_share': potential_dividends['estimated_dividend'],
                                     'record_date': pd.NaT,
                                     'payment_date': pd.NaT,
-                                    'note': '根据净值波动估算'
+                                    'note': '根据价格波动估算'
                                 })
                                 
-                                print(f"✓ 从历史数据估算出 {len(df_dividend)} 条可能的分红记录")
-                                return df_dividend
-                            else:
-                                print(f"  ⚠ 未检测到明显的分红事件")
+                                # 筛选日期范围
+                                if start_date:
+                                    df_dividend = df_dividend[df_dividend['ex_dividend_date'] >= start_date]
+                                if end_date:
+                                    df_dividend = df_dividend[df_dividend['ex_dividend_date'] <= end_date]
+                                
+                                if not df_dividend.empty:
+                                    print(f"  ✓ 从历史数据估算出 {len(df_dividend)} 条可能的分红记录")
+                                    return df_dividend
+                        
+                except Exception as e:
+                    print(f"  ⚠ 方法2失败: {str(e)}")
+                
+                try:
+                    # 方法3: 使用stock_zh_a_hist获取股票历史数据（对于股票型ETF）
+                    print(f"  尝试方法3: stock_zh_a_hist...")
+                    df_hist = ak.stock_zh_a_hist(
+                        symbol=etf_code,
+                        period="daily",
+                        start_date=start_date.replace('-', '') if start_date else '20100101',
+                        end_date=end_date.replace('-', '') if end_date else datetime.now().strftime('%Y%m%d'),
+                        adjust=""
+                    )
                     
-                    except Exception as e2:
-                        print(f"  ⚠ 方法2也失败: {str(e2)}")
+                    if df_hist is not None and not df_hist.empty:
+                        print(f"    可用列: {df_hist.columns.tolist()}")
+                        
+                        # 查找收盘价和日期列
+                        close_col = None
+                        date_col = None
+                        
+                        for col in ['收盘', '收盘价', 'close', 'Close']:
+                            if col in df_hist.columns:
+                                close_col = col
+                                break
+                        
+                        for col in ['日期', 'date', 'Date']:
+                            if col in df_hist.columns:
+                                date_col = col
+                                break
+                        
+                        if close_col and date_col:
+                            df_hist[date_col] = pd.to_datetime(df_hist[date_col])
+                            df_hist = df_hist.sort_values(date_col)
+                            
+                            # 计算日收益率
+                            df_hist['return'] = df_hist[close_col].pct_change()
+                            
+                            # 查找异常负收益
+                            potential_dividends = df_hist[df_hist['return'] < -0.015].copy()
+                            
+                            if not potential_dividends.empty:
+                                potential_dividends['estimated_dividend'] = (
+                                    potential_dividends['return'].abs() *
+                                    potential_dividends[close_col]
+                                )
+                                
+                                df_dividend = pd.DataFrame({
+                                    'ex_dividend_date': potential_dividends[date_col],
+                                    'dividend_per_share': potential_dividends['estimated_dividend'],
+                                    'record_date': pd.NaT,
+                                    'payment_date': pd.NaT,
+                                    'note': '根据价格波动估算'
+                                })
+                                
+                                if not df_dividend.empty:
+                                    print(f"  ✓ 从历史数据估算出 {len(df_dividend)} 条可能的分红记录")
+                                    return df_dividend
+                
+                except Exception as e:
+                    print(f"  ⚠ 方法3失败: {str(e)}")
             
             # 方法2: 如果没有对应的ETF，返回空数据框，但保留结构
             print(f"  ⚠ 暂无可用的分红数据源")
